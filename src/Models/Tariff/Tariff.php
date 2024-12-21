@@ -9,8 +9,14 @@ use PDO;
 
 class Tariff
 {
+    /**
+     * @var PDO|mixed|string
+     */
     private PDO $pdo;
 
+    /**
+     * @param $pdo
+     */
     public function __construct($pdo = '')
     {
         if (empty($pdo)) {
@@ -22,25 +28,4 @@ class Tariff
 
     }
 
-    public function createTable(): void
-    {
-        try {
-
-            $query = SqlHelper::getSqlQuery('createTariffsTable', 'Models', 'Tariff');
-
-            $stmt = $this->pdo->prepare($query);
-
-            $stmt->execute();
-
-        } catch (Exception $e) {
-            echo $e->getMessage();
-        }
-    }
-
-    public function getAllTariffs()
-    {
-//        $query = SqlHelper::getSqlQuery('getAllTariffs', 'Tariff');
-//        $stmt = $this->pdo->query($query);
-//        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
 }

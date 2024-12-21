@@ -4,24 +4,23 @@ namespace App\Helpers;
 
 class SqlHelper
 {
+
     /**
-     * @param string $filename
-     * @param string $type
+     * @param $pathToFile
      * @return string
      * @throws \Exception
      */
-    public static function getSqlQuery(string $filename,string $type,  string $modelName): string
+    public static function getSqlQuery($pathToFile): string
     {
-        $filePath = __DIR__ . "/../{$type}/{$modelName}/sqls/{$filename}.sql";
 
-        if (!file_exists($filePath)) {
+        if (!file_exists($pathToFile)) {
             throw new \Exception("Sql file not found");
         }
 
-        $query = file_get_contents($filePath);
+        $query = file_get_contents($pathToFile);
 
         if ($query === false || trim($query) === "") {
-            throw new \Exception("SQL file is empty or could not be read: {$filePath}");
+            throw new \Exception("SQL file is empty or could not be read: {$pathToFile}");
         }
 
         return $query;

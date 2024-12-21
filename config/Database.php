@@ -10,11 +10,17 @@ class Database
     private static ?PDO $pdo = null;
     private string $dsn;
 
+    /**
+     * @param string $dsn
+     */
     public function __construct(string $dsn = '')
     {
-        $this->dsn = $dsn ? : 'sqlite:' . __DIR__ . '/../storage/database.sqlite';
+        $this->dsn = $dsn ?: 'sqlite:' . __DIR__ . '/../storage/database.sqlite';
     }
 
+    /**
+     * @return PDO
+     */
     public function connect(): PDO
     {
         if (self::$pdo === null) {
@@ -37,11 +43,18 @@ class Database
     }
 
 
-    public static function instance($dsn = ''): static
+    /**
+     * @param string $dsn
+     * @return static
+     */
+    public static function instance(string $dsn = ''): static
     {
         return new static($dsn);
     }
 
+    /**
+     * @return void
+     */
     public static function disconnect(): void
     {
         self::$pdo = null;
