@@ -1,9 +1,10 @@
 SELECT id,
        name,
        description,
-       speed,
        price,
        created_at,
        expires_at,
+       speed,
        logo
-FROM tariffs;
+FROM tariffs
+WHERE id = :id

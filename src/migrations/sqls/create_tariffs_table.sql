@@ -6,5 +6,6 @@ CREATE TABLE IF NOT EXISTS tariffs
     price REAL NOT NULL,
     created_at TEXT NOT NULL,
     expires_at TEXT NOT NULL,
+    speed INT NOT NULL,
     logo TEXT
 )

@@ -6,7 +6,7 @@ use App\Config\Database;
 use App\Helpers\SqlHelper;
 use PDO;
 
-abstract class BaseMigration
+abstract class Migration
 {
     private PDO $pdo;
 

@@ -4,28 +4,34 @@ namespace App\Models\Tariff;
 
 use App\Config\Database;
 use App\Helpers\SqlHelper;
+use App\Models\Model as BaseModel;
 use Exception;
 use PDO;
 
-class Tariff
+class Tariff extends BaseModel
 {
-    /**
-     * @var PDO|mixed|string
-     */
-    private PDO $pdo;
-
-    /**
-     * @param $pdo
-     */
-    public function __construct($pdo = '')
+    public function getTariffs(): array
     {
-        if (empty($pdo)) {
-            $pdo = Database::instance()->connect();
-            $this->pdo = $pdo;
-        } else {
-            $this->pdo = $pdo;
-        }
+        $queryPath = __DIR__ . '/sqls/getAllTariffs.sql';
 
+        $query = SqlHelper::getSqlQuery($queryPath);
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getTariffById($id): array
+    {
+        $queryPath = __DIR__ . '/sqls/getTariffById.sql';
+
+        $query = SqlHelper::getSqlQuery($queryPath);
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

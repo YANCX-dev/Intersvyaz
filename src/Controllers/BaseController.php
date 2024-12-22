@@ -6,9 +6,10 @@ class BaseController
 {
     /**
      * @param string $view
-     * @return string
+     * @param array $data
+     * @return array
      */
-    protected function getViewPath(string $view): string
+    protected function getViewPath(string $view, array $data = []): array
     {
         $baseDir = __DIR__ . '/../Views/';
         $viewPath = $baseDir . $view . '.php';
@@ -18,6 +19,14 @@ class BaseController
             throw new \RuntimeException("View file not found: $viewPath");
         }
 
-        return $viewPath;
+        return [$viewPath, $data];
     }
+
+    public function dd($args)
+    {
+        echo '<pre>';
+        var_dump($args);
+        echo '</pre>';
+    }
+
 }
