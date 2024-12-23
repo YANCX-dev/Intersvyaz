@@ -1,5 +1,9 @@
 <?php
 $pathToStyles = '/styles/style.css';
+//$scriptPath = $_SERVER['DOCUMENT_ROOT'] . '/../scripts/js/updateTariff.js';
+$scriptPath = 'scripts/js/updateTariff.js';
+$scriptPathUploadImage = 'scripts/js/uploadImage.js';
+
 ?>
 
 <!DOCTYPE html>
@@ -14,3 +18,6 @@ $pathToStyles = '/styles/style.css';
 <header style="display: flex; background-color: pink; height: 50px">
     <p>Тестовые стили</p>
 </header>
+
+<!--<script type="text/javascript" defer src="--><?php //= $scriptPath ?><!--"></script>-->
+<!--<script type="text/javascript" defer src="--><?php //= $scriptPathUploadImage ?><!--"></script>-->

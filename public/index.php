@@ -8,8 +8,11 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $router = new Routes();
-[$view, $data] = $router->handleRequest();
+$response = $router->handleRequest();
 
+if (is_array($response) && count($response) > 0) {
+    [$view, $data] = $response;
+}
 function renderView(string $viewPath, array $data): void
 {
     require_once __DIR__ . '/../src/Views/inc/header.view.php';
@@ -20,5 +23,8 @@ function renderView(string $viewPath, array $data): void
     require_once __DIR__ . '/../src/Views/inc/footer.view.php';
 }
 
-renderView($view, $data);
+if (!empty($view) && !empty($data)) {
+    renderView($view, $data);
+}
+
 

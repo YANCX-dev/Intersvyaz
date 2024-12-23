@@ -22,7 +22,7 @@ class Routes
                 '/tariffs/show/{id}' => fn($params) => (new TariffController())->show($params['id']),
             ],
             'POST' => [
-                '/tariffs/update/{id}' => fn($params) => (new TariffController())->update($params['id']),
+                '/tariffs/update' => fn() => (new TariffController())->update(),
             ],
         ];
 
@@ -65,14 +65,16 @@ class Routes
             return call_user_func($routes[$method][$uri]);
         }
 
-
         foreach ($routes[$method] as $route => $controller) {
-
             $pattern = preg_replace('/\{(\w+)\}/', '(?P<$1>[^/]+)', $route);
             $pattern = '#^' . $pattern . '$#'; // Формируем регулярное выражение с ограничителями
 
-
             if (preg_match($pattern, $uri, $matches)) {
+
+                if ($method === "POST") {
+                    return call_user_func($controller);
+                }
+
                 $params = array_filter($matches, fn($key) => !is_int($key), ARRAY_FILTER_USE_KEY);
 
                 return call_user_func($controller, $params);
@@ -88,5 +90,6 @@ class Routes
         echo '<pre>';
         var_dump($args);
         echo '</pre>';
+        die();
     }
 }
