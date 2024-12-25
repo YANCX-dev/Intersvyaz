@@ -23,7 +23,7 @@ function renderView(string $viewPath, array $data): void
     require_once __DIR__ . '/../src/Views/inc/footer.view.php';
 }
 
-if (!empty($view) && !empty($data)) {
+if (!empty($view)) {
     renderView($view, $data);
 }
 

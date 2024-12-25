@@ -42,7 +42,6 @@ class Database
         return self::$pdo;
     }
 
-
     /**
      * @param string $dsn
      * @return static

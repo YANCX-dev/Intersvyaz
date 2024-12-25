@@ -3,6 +3,7 @@
 namespace App\Config\Routing;
 
 use App\Controllers\TariffController;
+use App\Models\Tariff\Tariff;
 
 class Routes
 {
@@ -18,11 +19,14 @@ class Routes
         $routes = [
             'GET' => [
                 '/' => fn() => (new TariffController())->index(),
+                '/csvtools' => fn() => (new TariffController())->csvToolsPage(),
                 '/tariffs/edit/{id}' => fn($params) => (new TariffController())->edit($params['id']),
                 '/tariffs/show/{id}' => fn($params) => (new TariffController())->show($params['id']),
+                '/tariffs/export' => fn() => (new TariffController())->exportTariffsToCSV(),
             ],
             'POST' => [
                 '/tariffs/update' => fn() => (new TariffController())->update(),
+                '/tariffs/import' => fn() => (new TariffController())->importTariffsFromCSV(),
             ],
         ];
 
@@ -83,7 +87,6 @@ class Routes
 
         return $this->abort(404);
     }
-
 
     public function dd($args)
     {

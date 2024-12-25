@@ -6,6 +6,53 @@ body {
     color: #333;
 }
 
+/* Стили для всего документа */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Стили для хедера */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #0078d7; /* Цвет фона */
+    height: 60px;
+    padding: 0 20px;
+    color: white; /* Цвет текста */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
+
+.menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li {
+    margin: 0 10px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+}
+
+.menu a:hover {
+    text-decoration: underline;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -119,6 +166,8 @@ form button:hover {
 }
 
 .tariff-detail {
+    display: flex;
+    gap: 20px;
     max-width: 800px;
     margin: 50px auto;
     background-color: #f9f9f9;
@@ -131,21 +180,21 @@ form button:hover {
 }
 
 .tariff-detail h3 {
-    font-size: 2.5em; /* Увеличиваем размер заголовка */
-    color: #333; /* Темный цвет для заголовка */
-    margin-bottom: 20px; /* Больше отступа снизу */
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 20px;
 }
 
 .tariff-detail p {
-    font-size: 1.2em; /* Увеличиваем шрифт для лучшей читаемости */
-    color: #555; /* Тёмно-серый цвет для текста */
-    margin: 15px 0; /* Больше отступов между абзацами */
+    font-size: 1.2em;
+    color: #555;
+    margin: 15px 0;
 }
 
 .tariff-detail .tariff-speed,
 .tariff-detail .tariff-description,
 .tariff-detail .tariff-price {
-    line-height: 1.5; /* Увеличиваем межстрочный интервал */
+    line-height: 1.5;
 }
 
 .tariff-detail .btn {
@@ -169,3 +218,36 @@ form button:hover {
     font-style: italic;
     color: #777;
 }
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.export-btn {
+    padding: 10px;
+    color: #fff;
+    background-color: #59a260;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.import-btn {
+    padding: 10px;
+    color: #fff;
+    background-color: #cbbb52;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+

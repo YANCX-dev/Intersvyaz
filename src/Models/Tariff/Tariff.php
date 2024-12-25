@@ -2,7 +2,6 @@
 
 namespace App\Models\Tariff;
 
-use App\Config\Database;
 use App\Helpers\SqlHelper;
 use App\Models\Model as BaseModel;
 use Exception;
@@ -35,23 +34,31 @@ class Tariff extends BaseModel
     {
         $queryPath = __DIR__ . '/sqls/getTariffById.sql';
 
-        $query = SqlHelper::getSqlQuery($queryPath);
+        try {
+            $query = SqlHelper::getSqlQuery($queryPath);
 
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
 
+    /**
+     * @param $id
+     * @param array $data
+     * @return bool
+     */
     public function updateTariffById($id, array $data): bool
     {
         $queryPath = __DIR__ . '/sqls/updateTariffById.sql';
 
         try {
             $query = SqlHelper::getSqlQuery($queryPath);
-
 
             if (empty($data['logo'])) {
                 $query = preg_replace('/,\s*logo\s*=\s*:logo/', '', $query);
@@ -76,16 +83,49 @@ class Tariff extends BaseModel
             $params['logo'] = $data['logo'];
 
             return $stmt->execute($params);
-        } catch (Exception $e) {
-            echo $e->getMessage();
+
+        } catch (Exception) {
+            return false;
         }
     }
 
-    private function dd(mixed $args)
+    /**
+     * @throws Exception
+     */
+    public function getAllTariffs(): array
     {
-        echo '<pre>';
-        var_dump($args);
-        echo '</pre>';
+        $queryPath = __DIR__ . '/sqls/getAllTariffs.sql';
+
+        try {
+            $query = SqlHelper::getSqlQuery($queryPath);
+
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function createTariff(array $data): bool
+    {
+        $queryPath = __DIR__ . '/sqls/createTariff.sql';
+
+        $query = SqlHelper::getSqlQuery($queryPath);
+
+        $stmt = $this->pdo->prepare($query);
+
+        return $stmt->execute([
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'price' => $data['price'],
+            'speed' => $data['speed'],
+            'created_at' => $data['created_at'],
+            'expires_at' => $data['expires_at'],
+            'logo' => $data['logo'] ?? null,
+        ]);
     }
 
 }

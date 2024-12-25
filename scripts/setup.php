@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Config\Database;
+use App\Helpers\SqlHelper;
 use App\migrations\TariffMigration;
 
 try {
@@ -12,6 +13,7 @@ try {
 
     foreach ($migrations as $migrationClass) {
         $migrations = new $migrationClass();
+        $migrations->seedTable = true;
         $migrations->executeMigration();
         echo "Successful created migrations.\n";
     }

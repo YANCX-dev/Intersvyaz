@@ -4,7 +4,7 @@ $heading = 'Tariff index page';
 
 ?>
 
-<form action="/tariffs/update" method="POST">
+<form action="/tariffs/update" method="POST" class="editForm">
     <input type="hidden" name="id" value="<?= htmlspecialchars($tariff['id']) ?>">
     <label for="name">Название:</label>
     <input type="text" id="name" name="name" value="<?= htmlspecialchars($tariff['name']) ?>" required>

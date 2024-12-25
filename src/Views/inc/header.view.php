@@ -15,9 +15,12 @@ $scriptPathUploadImage = 'scripts/js/uploadImage.js';
     <link rel="stylesheet" href="<?= $pathToStyles ?>">
 </head>
 <body>
-<header style="display: flex; background-color: pink; height: 50px">
-    <p>Тестовые стили</p>
+<header>
+    <a href="/" class="logo">Интерсвязь</a>
+    <nav>
+        <ul class="menu">
+            <li><a href="/">Главная</a></li>
+            <li><a href="/csvtools">Загрузка/Выгрузка тарифов</a></li>
+        </ul>
+    </nav>
 </header>
-
-<!--<script type="text/javascript" defer src="--><?php //= $scriptPath ?><!--"></script>-->
-<!--<script type="text/javascript" defer src="--><?php //= $scriptPathUploadImage ?><!--"></script>-->
