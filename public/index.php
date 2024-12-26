@@ -10,9 +10,26 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $router = new Routes();
 $response = $router->handleRequest();
 
-if (is_array($response) && count($response) > 0) {
-    [$view, $data] = $response;
+if (!array_key_exists('errors', $response)) {
+    if (isset($response[0]) || isset($response[1])) {
+        [$view, $data] = $response;
+    }
+
+} else {
+    foreach ($response['errors'] as $error) {
+        echo $error . '<br>';
+    }
+    echo '<a href="/" style="font-size: 30px">' . 'Go back' . '</a>';
 }
+
+
+function dd($args)
+{
+    echo '<pre>';
+    var_dump($args);
+    echo '</pre>';
+}
+
 function renderView(string $viewPath, array $data): void
 {
     require_once __DIR__ . '/../src/Views/inc/header.view.php';

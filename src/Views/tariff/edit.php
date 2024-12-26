@@ -18,7 +18,7 @@ $heading = 'Tariff index page';
     <label for="price">Стоимость (₽):</label>
     <input type="number" id="price" name="price" value="<?= htmlspecialchars($tariff['price']) ?>" required>
 
-    <label for="created_at">Дата подключения:</label>
+    <label for="created_at">Дата создания:</label>
     <input type="date" id="created_at" name="created_at" value="<?= htmlspecialchars($tariff['created_at']) ?>"
            required>
 

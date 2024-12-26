@@ -72,7 +72,7 @@ class Tariff extends BaseModel
                 'description' => $data['description'],
                 'price' => $data['price'],
                 'expires_at' => $data['expires_at'],
-                'created_at' => $data['created_at'],
+                'created_at' => $data['created_at'],//Формат даты переделаю
                 'speed' => $data['speed'],
             ];
 
@@ -117,15 +117,32 @@ class Tariff extends BaseModel
 
         $stmt = $this->pdo->prepare($query);
 
-        return $stmt->execute([
-            'name' => $data['name'],
-            'description' => $data['description'],
-            'price' => $data['price'],
-            'speed' => $data['speed'],
-            'created_at' => $data['created_at'],
-            'expires_at' => $data['expires_at'],
-            'logo' => $data['logo'] ?? null,
-        ]);
+        if ($this->unique($data['name'])) {
+            return $stmt->execute([
+                'name' => $data['name'],
+                'description' => $data['description'],
+                'price' => $data['price'],
+                'speed' => $data['speed'],
+                'created_at' => $data['created_at'],
+                'expires_at' => $data['expires_at'],
+                'logo' => $data['logo'] ?? null,
+            ]);
+        }
+
+        return false;
+
     }
 
+    protected function unique($value): bool
+    {
+        $queryPath = __DIR__ . '/sqls/unique.sql';
+        $query = SqlHelper::getSqlQuery($queryPath);
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':value', $value);
+        $stmt->execute();
+
+        $temp = $stmt->fetchColumn();
+
+        return !$temp;
+    }
 }

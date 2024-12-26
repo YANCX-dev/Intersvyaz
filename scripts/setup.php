@@ -13,7 +13,6 @@ try {
 
     foreach ($migrations as $migrationClass) {
         $migrations = new $migrationClass();
-        $migrations->seedTable = true;
         $migrations->executeMigration();
         echo "Successful created migrations.\n";
     }

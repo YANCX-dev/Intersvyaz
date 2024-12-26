@@ -7,4 +7,7 @@
         <input type="file" id="csv_file" name="csv_file" accept=".csv" required>
         <button type="submit" class="import-btn">Импортировать</button>
     </form>
+    <form action="/tariffs/export-pdf" method="GET">
+        <button type="submit">Экспортировать в PDF</button>
+    </form>
 </div>

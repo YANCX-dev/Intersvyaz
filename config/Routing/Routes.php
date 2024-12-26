@@ -23,6 +23,7 @@ class Routes
                 '/tariffs/edit/{id}' => fn($params) => (new TariffController())->edit($params['id']),
                 '/tariffs/show/{id}' => fn($params) => (new TariffController())->show($params['id']),
                 '/tariffs/export' => fn() => (new TariffController())->exportTariffsToCSV(),
+                '/tariffs/export-pdf' => fn() => (new TariffController())->exportTariffsToPDF(),
             ],
             'POST' => [
                 '/tariffs/update' => fn() => (new TariffController())->update(),

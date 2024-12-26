@@ -5,8 +5,12 @@ namespace App\Controllers;
 
 use App\Helpers\Validator;
 use App\Models\Tariff\Tariff;
+use Cassandra\Date;
+use Dompdf\Dompdf;
 use Exception;
+use League\Csv\InvalidArgument;
 use League\Csv\Reader;
+use League\Csv\UnavailableStream;
 use League\Csv\Writer;
 use SplTempFileObject;
 
@@ -137,13 +141,17 @@ class TariffController extends BaseController
             http_response_code(200);
             echo json_encode(['status' => 'success', 'message' => 'Tariff updated successfully']);
 
+            return [];
+
         } catch (Exception $e) {
             http_response_code(500);
 
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+
+            return [];
         }
 
-        return [];
+
     }
 
     /**
@@ -161,10 +169,8 @@ class TariffController extends BaseController
 
     }
 
-    /**
-     * @return void
-     */
-    public function exportTariffsToCSV(): void
+
+    public function exportTariffsToCSV(): array
     {
         try {
             $tariffs = $this->tariffModel->getAllTariffs();
@@ -200,14 +206,17 @@ class TariffController extends BaseController
             echo $e->getMessage();
         }
 
+        return [];
     }
 
+
     /**
-     * @return void
+     * @throws UnavailableStream
+     * @throws \DateMalformedStringException
+     * @throws InvalidArgument
      * @throws \League\Csv\Exception
-     * @throws \League\Csv\UnavailableStream
      */
-    public function importTariffsFromCSV(): void
+    public function importTariffsFromCSV(): array
     {
         if (!isset($_FILES['csv_file']) || $_FILES['csv_file']['error'] !== UPLOAD_ERR_OK) {
             throw new \RuntimeException('Ошибка при загрузке файла');
@@ -216,24 +225,110 @@ class TariffController extends BaseController
         $filePath = $_FILES['csv_file']['tmp_name'];
 
         $csv = Reader::createFromPath($filePath, 'r');
+        $csv->setDelimiter(';');
         $csv->setHeaderOffset(0);
 
         $records = $csv->getRecords();
 
-        foreach ($records as $record) {
-            $this->tariffModel->createTariff([
+        $errors = [];
+
+        foreach ($records as $index => $record) {
+            $success = $this->tariffModel->createTariff([
                 'name' => $record['Name'],
                 'description' => $record['Description'],
                 'price' => $record['Price'],
                 'speed' => $record['Speed'],
-                'created_at' => $record['Created_at'],
-                'expires_at' => $record['Expires_at'],
+                'created_at' => (new \DateTime())->format('Y-m-d'),
+                'expires_at' => (new \DateTime($record['Expires_at']))->format('Y-m-d'),
                 'logo' => $record['Logo'] ?? null,
             ]);
+
+            if (!$success) {
+                $errors[] = "Ошибка при импорте записи на строке (Имя тарифа не уникально) " . ($index + 1);
+            }
+        }
+
+        if (!empty($errors)) {
+            return ['errors' => $errors];
         }
 
         header('Location: /');
-        exit;
+
+        return [];
+    }
+
+    /**
+     * @throws \DateMalformedStringException
+     */
+    public function exportTariffsToPDF(): array
+    {
+        $tariffs = $this->tariffModel->getAllTariffs();
+
+        if (empty($tariffs)) {
+            throw new \RuntimeException('Нет данных для экспорта');
+        }
+
+        $html = '
+    <style>
+        body {
+            font-family: "DejaVu Sans", sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <h1>Список тарифов</h1>';
+        $html .= '<table>';
+        $html .= '<thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Цена</th>
+                    <th>Скорость</th>
+                    <th>Дата подключения</th>
+                    <th>Дата окончания</th>
+                </tr>
+              </thead>';
+        $html .= '<tbody>';
+
+        foreach ($tariffs as $tariff) {
+            $html .= '<tr>';
+            $html .= '<td>' . htmlspecialchars($tariff['id']) . '</td>';
+            $html .= '<td>' . htmlspecialchars($tariff['name']) . '</td>';
+            $html .= '<td>' . htmlspecialchars($tariff['description']) . '</td>';
+            $html .= '<td>' . htmlspecialchars($tariff['price']) . ' ₽</td>';
+            $html .= '<td>' . htmlspecialchars($tariff['speed']) . ' Мбит/с</td>';
+            $html .= '<td>' . (new \DateTime($tariff['created_at']))->format('d.m.Y') . '</td>';
+            $html .= '<td>' . (new \DateTime($tariff['expires_at']))->format('d.m.Y') . '</td>';
+            $html .= '</tr>';
+        }
+
+        $html .= '</tbody>';
+        $html .= '</table>';
+
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+
+
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="tariffs.pdf"');
+        echo $dompdf->output();
+
+        return [];
     }
 
     public function dd($args)

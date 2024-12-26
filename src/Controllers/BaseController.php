@@ -9,7 +9,7 @@ class BaseController
      * @param array $data
      * @return array
      */
-    protected function getViewPath(string $view, array $data = []): array
+    protected function getViewPath(string $view, array $data = []): array|null
     {
         $baseDir = __DIR__ . '/../Views/';
         $viewPath = $baseDir . $view . '.php';
