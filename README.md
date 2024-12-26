@@ -2,7 +2,7 @@
 
 ## Задачи проекта
 
-- [x] Подключение фреймворка и расширений произведено через autoloader композера (composer).
+- [x] Подключение классов через autoloader композера (composer).
 - [x] Проект разворачивается через Docker файл.
 - [x] В качестве базы данных используется SQLite.
 - [x] Изменения в тариф должны вноситься посредством AJAX.
@@ -23,7 +23,7 @@
 В корневой директории проекта выполните команду:
 
 ```bash
-docker-compose exec <container_name> composer install --ignore-platform-reqs
+composer install --ignore-platform-reqs
 ```
 
 Эта команда установит все необходимые зависимости, указанные в файле `composer.json`.

@@ -79,21 +79,6 @@ class Validator
     }
 
     /**
-     * Проверка, что поле уникальное.
-     */
-//    public function uniqueName(string $field, $value): self
-//    {
-//
-//
-//        if ($count > 0) {
-//            $this->errors[$field][] = "Поле '$field' должно быть уникальным.";
-//        }
-//
-//        return $this;
-//    }
-
-
-    /**
      * Получение ошибок.
      */
     public function getErrors(): array

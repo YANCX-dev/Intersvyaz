@@ -133,6 +133,11 @@ class Tariff extends BaseModel
 
     }
 
+    /**
+     * @param $value
+     * @return bool
+     * @throws Exception
+     */
     protected function unique($value): bool
     {
         $queryPath = __DIR__ . '/sqls/unique.sql';

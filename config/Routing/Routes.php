@@ -34,8 +34,10 @@ class Routes
         return $this->routeToController($method, $path, $routes);
     }
 
-    /** Возврат представления ошибки
+
+    /**
      * @param int $statusCode
+     * @param array $errors
      * @return array
      */
     private function abort(int $statusCode = 404, array $errors = []): array

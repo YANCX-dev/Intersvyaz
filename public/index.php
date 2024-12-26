@@ -22,14 +22,6 @@ if (!array_key_exists('errors', $response)) {
     echo '<a href="/" style="font-size: 30px">' . 'Go back' . '</a>';
 }
 
-
-function dd($args)
-{
-    echo '<pre>';
-    var_dump($args);
-    echo '</pre>';
-}
-
 function renderView(string $viewPath, array $data): void
 {
     require_once __DIR__ . '/../src/Views/inc/header.view.php';

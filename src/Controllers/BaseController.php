@@ -4,10 +4,11 @@ namespace App\Controllers;
 
 class BaseController
 {
+
     /**
      * @param string $view
      * @param array $data
-     * @return array
+     * @return array|null
      */
     protected function getViewPath(string $view, array $data = []): array|null
     {
@@ -22,11 +23,5 @@ class BaseController
         return [$viewPath, $data];
     }
 
-    public function dd($args)
-    {
-        echo '<pre>';
-        var_dump($args);
-        echo '</pre>';
-    }
-
 }
+

@@ -5,7 +5,6 @@ namespace App\Controllers;
 
 use App\Helpers\Validator;
 use App\Models\Tariff\Tariff;
-use Cassandra\Date;
 use Dompdf\Dompdf;
 use Exception;
 use League\Csv\InvalidArgument;
@@ -48,7 +47,6 @@ class TariffController extends BaseController
         $tariff = $this->tariffModel->getTariffById($id);
         return $this->getViewPath('tariff/edit', compact('tariff'));
     }
-
 
     /**
      * @return array
@@ -158,7 +156,6 @@ class TariffController extends BaseController
 
             return [];
         }
-
 
     }
 
@@ -348,12 +345,7 @@ class TariffController extends BaseController
         return [];
     }
 
-    public function dd($args)
-    {
-        echo '<pre>';
-        var_dump($args);
-        echo '</pre>';
-    }
-
 }
+
+
 

@@ -2,8 +2,6 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use App\Config\Database;
-use App\Helpers\SqlHelper;
 use App\migrations\TariffMigration;
 
 try {
