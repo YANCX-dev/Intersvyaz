@@ -20,7 +20,7 @@ $heading = 'Tariff index page';
 
     <label for="created_at">Дата создания:</label>
     <input type="date" id="created_at" name="created_at" value="<?= htmlspecialchars($tariff['created_at']) ?>"
-           required>
+           required disabled>
 
     <label for="expires_at">Дата окончания тарифа:</label>
     <input type="date" id="expires_at" name="expires_at" value="<?= htmlspecialchars($tariff['expires_at']) ?>"

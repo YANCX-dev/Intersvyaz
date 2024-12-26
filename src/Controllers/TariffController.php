@@ -93,6 +93,14 @@ class TariffController extends BaseController
                 return [];
             }
 
+            $createdAt = new \DateTime($data['created_at']);
+            $expiresAt = new \DateTime($data['expires_at']);
+            if ($expiresAt <= $createdAt) {
+                http_response_code(400);
+                echo json_encode(['status' => 'error', 'message' => 'Дата окончания тарифа должна быть больше даты создания.']);
+                return [];
+            }
+
             if (empty($data['id'])) {
                 throw new \InvalidArgumentException('ID тарифа обязателен.');
             }
@@ -233,13 +241,22 @@ class TariffController extends BaseController
         $errors = [];
 
         foreach ($records as $index => $record) {
+
+            $createdAt = new \DateTime();
+            $expiresAt = new \DateTime($record['Expires_at']);
+
+            if ($expiresAt <= $createdAt) {
+                $errors[] = "Ошибка в строке " . ($index + 1) . ": Дата окончания тарифа должна быть больше текущей даты.";
+                continue;
+            }
+
             $success = $this->tariffModel->createTariff([
                 'name' => $record['Name'],
                 'description' => $record['Description'],
                 'price' => $record['Price'],
                 'speed' => $record['Speed'],
-                'created_at' => (new \DateTime())->format('Y-m-d'),
-                'expires_at' => (new \DateTime($record['Expires_at']))->format('Y-m-d'),
+                'created_at' => $createdAt->format('Y-m-d'),
+                'expires_at' => $expiresAt->format('Y-m-d'),
                 'logo' => $record['Logo'] ?? null,
             ]);
 
